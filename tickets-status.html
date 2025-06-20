@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>متابعة التذاكر | ليالي البرنس</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #9C27B0;
+            margin-bottom: 30px;
+        }
+        .ticket-info {
+            margin: 20px 0;
+            font-size: 18px;
+        }
+        .ticket-count {
+            font-weight: bold;
+            color: #E91E63;
+        }
+        .progress-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            margin: 30px 0;
+        }
+        .progress-bar {
+            height: 30px;
+            border-radius: 10px;
+            background-color: #4CAF50;
+            width: 0%;
+            transition: width 1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        .ticket-types {
+            display: flex;
+            justify-content: space-around;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        .ticket-type {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px;
+            min-width: 100px;
+        }
+        .vip {
+            background-color: #f3e5f5;
+            border: 2px solid #9C27B0;
+        }
+        .gold {
+            background-color: #fff8e1;
+            border: 2px solid #FFD700;
+        }
+        .normal {
+            background-color: #e8f5e9;
+            border: 2px solid #4CAF50;
+        }
+        .last-update {
+            color: #666;
+            font-size: 14px;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>متابعة التذاكر المتبقية</h1>
+        <h2>ليالي البرنس - الفنان عمار دفع الله</h2>
+        
+        <div class="ticket-info">
+            <p>إجمالي التذاكر: <span class="ticket-count" id="total-tickets">128</span></p>
+            <p>تم حجز: <span class="ticket-count" id="booked-tickets">0</span></p>
+            <p>المتبقي: <span class="ticket-count" id="remaining-tickets">128</span></p>
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar">0%</div>
+        </div>
+        
+        <div class="ticket-types">
+            <div class="ticket-type vip">
+                <h3>VIP</h3>
+                <p>المتبقي: <span id="vip-remaining">20</span></p>
+            </div>
+            <div class="ticket-type gold">
+                <h3>GOLD</h3>
+                <p>المتبقي: <span id="gold-remaining">75</span></p>
+            </div>
+            <div class="ticket-type normal">
+                <h3>NORMAL</h3>
+                <p>المتبقي: <span id="normal-remaining">33</span></p>
+            </div>
+        </div>
+        
+        <p class="last-update">آخر تحديث: <span id="update-time">--</span></p>
+    </div>
+
+    <script>
+        // بيانات التذاكر
+        const ticketData = {
+            vip: { total: 20, booked: 0 },
+            gold: { total: 75, booked: 0 },
+            normal: { total: 33, booked: 0 }
+        };
+
+        // دالة لتحديث البيانات
+        function updateDisplay() {
+            // حساب الإجماليات
+            const totalTickets = ticketData.vip.total + ticketData.gold.total + ticketData.normal.total;
+            const bookedTickets = ticketData.vip.booked + ticketData.gold.booked + ticketData.normal.booked;
+            const remainingTickets = totalTickets - bookedTickets;
+            const percentage = Math.round((bookedTickets / totalTickets) * 100);
+            
+            // تحديث العرض
+            document.getElementById('total-tickets').textContent = totalTickets;
+            document.getElementById('booked-tickets').textContent = bookedTickets;
+            document.getElementById('remaining-tickets').textContent = remainingTickets;
+            document.getElementById('progress-bar').textContent = percentage + '%';
+            document.getElementById('progress-bar').style.width = percentage + '%';
+            
+            document.getElementById('vip-remaining').textContent = ticketData.vip.total - ticketData.vip.booked;
+            document.getElementById('gold-remaining').textContent = ticketData.gold.total - ticketData.gold.booked;
+            document.getElementById('normal-remaining').textContent = ticketData.normal.total - ticketData.normal.booked;
+            
+            // تحديث وقت التحديث الأخير
+            const now = new Date();
+            document.getElementById('update-time').textContent = now.toLocaleString('ar-SA');
+            
+            // تغيير لون شريط التقدم حسب النسبة
+            if(percentage < 30) {
+                document.getElementById('progress-bar').style.backgroundColor = '#e53935';
+            } else if(percentage < 70) {
+                document.getElementById('progress-bar').style.backgroundColor = '#fb8c00';
+            } else {
+                document.getElementById('progress-bar').style.backgroundColor = '#4CAF50';
+            }
+        }
+
+        // محاكاة تحديث البيانات من الخادم (يمكن استبدالها بطلبات AJAX حقيقية)
+        function fetchData() {
+            // في الواقع الفعلي، هنا ستقوم بجلب البيانات من الخادم
+            // هذه مجرد محاكاة للتغييرات
+            ticketData.vip.booked = Math.min(ticketData.vip.booked + Math.floor(Math.random() * 3), ticketData.vip.total);
+            ticketData.gold.booked = Math.min(ticketData.gold.booked + Math.floor(Math.random() * 5), ticketData.gold.total);
+            ticketData.normal.booked = Math.min(ticketData.normal.booked + Math.floor(Math.random() * 7), ticketData.normal.total);
+            
+            updateDisplay();
+        }
+
+        // تحديث البيانات كل 10 ثواني (يمكن تغيير الفترة حسب الحاجة)
+        setInterval(fetchData, 10000);
+        
+        // التهيئة الأولية
+        window.onload = function() {
+            updateDisplay();
+        };
+    </script>
+</body>
+</html>
