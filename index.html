@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ليالي البرنس | Alprince Nights</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6a1b9a;
+            --secondary: #ffab00;
+            --dark: #121212;
+            --light: #f5f5f5;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            min-height: 100vh;
+            background-image: radial-gradient(circle at 25% 50%, rgba(106, 27, 154, 0.2) 0%, transparent 50%);
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeIn 1s ease;
+        }
+        
+        .logo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .logo-en {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--secondary);
+            letter-spacing: 2px;
+        }
+        
+        .logo-ar {
+            font-size: 3rem;
+            font-weight: 700;
+            color: white;
+            margin-top: -0.5rem;
+        }
+        
+        .artist {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 1rem;
+        }
+        
+        .countdown-container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            animation: slideUp 1s ease;
+        }
+        
+        .countdown-title {
+            text-align: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--secondary);
+        }
+        
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .countdown-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            min-width: 100px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .countdown-item:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 171, 0, 0.2);
+        }
+        
+        .countdown-number {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .countdown-label {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 0.5rem;
+        }
+        
+        .tickets-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 3rem 0;
+        }
+        
+        .ticket-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .ticket-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+        
+        .ticket-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .ticket-type {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: white;
+        }
+        
+        .ticket-price {
+            font-size: 1.2rem;
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+        }
+        
+        .ticket-remaining {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin: 1rem 0;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .progress-container {
+            width: 100%;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin: 2rem 0;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            border-radius: 10px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: width 1s ease;
+            position: relative;
+        }
+        
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, 
+                          transparent, 
+                          rgba(255, 255, 255, 0.3), 
+                          transparent);
+            animation: shimmer 2s infinite;
+        }
+        
+        .last-update {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+            margin-top: 2rem;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        @media (max-width: 768px) {
+            .logo-en { font-size: 2rem; }
+            .logo-ar { font-size: 2.5rem; }
+            .countdown { gap: 1rem; }
+            .countdown-item { min-width: 80px; padding: 1rem; }
+            .countdown-number { font-size: 2rem; }
+            .ticket-remaining { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <div class="logo-en">Alprince Nights</div>
+                <div class="logo-ar">ليالي البرنس</div>
+            </div>
+            <div class="artist">الفنان عمار دفع الله</div>
+        </header>
+        
+        <div class="countdown-container">
+            <div class="countdown-title">العد التنازلي لليلة الحفل</div>
+            <div class="countdown">
+                <div class="countdown-item">
+                    <div class="countdown-number" id="days">00</div>
+                    <div class="countdown-label">أيام</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="hours">00</div>
+                    <div class="countdown-label">ساعات</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="minutes">00</div>
+                    <div class="countdown-label">دقائق</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="seconds">00</div>
+                    <div class="countdown-label">ثواني</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar" style="width: 30%"></div>
+        </div>
+        
+        <div class="tickets-container">
+            <div class="ticket-card">
+                <div class="ticket-type">VIP</div>
+                <div class="ticket-price">السعر: 90 ريال</div>
+                <div class="ticket-remaining" id="vip-remaining">20</div>
+                <div>تذاكر متبقية</div>
+            </div>
+            
+            <div class="ticket-card">
+                <div class="ticket-type">GOLD</div>
+                <div class="ticket-price">السعر: 70 ريال</div>
+                <div class="ticket-remaining" id="gold-remaining">75</div>
+                <div>تذاكر متبقية</div>
+            </div>
+            
+            <div class="ticket-card">
+                <div class="ticket-type">NORMAL</div>
+                <div class="ticket-price">السعر: 50 ريال</div>
+                <div class="ticket-remaining" id="normal-remaining">33</div>
+                <div>تذاكر متبقية</div>
+            </div>
+        </div>
+        
+        <div class="last-update">
+            آخر تحديث: <span id="update-time">--</span>
+        </div>
+    </div>
+
+    <script>
+        // بيانات التذاكر
+        const tickets = {
+            vip: { total: 20, booked: 5 },
+            gold: { total: 75, booked: 10 },
+            normal: { total: 33, booked: 8 }
+        };
+        
+        // تاريخ الحفل (4 يوليو 2025 - 9 مساءً بتوقيت السعودية)
+        const concertDate = new Date('July 4, 2025 21:00:00 GMT+0300');
+        
+        // تحديث العد التنازلي
+        function updateCountdown() {
+            const now = new Date();
+            const diff = concertDate - now;
+            
+            if (diff <= 0) {
+                document.querySelector('.countdown-title').textContent = 'الحفل قد بدأ!';
+                return;
+            }
+            
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            document.getElementById('days').textContent = days.toString().padStart(2, '0');
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+        }
+        
+        // تحديث بيانات التذاكر
+        function updateTickets() {
+            // حساب النسبة المئوية للحجز
+            const totalTickets = tickets.vip.total + tickets.gold.total + tickets.normal.total;
+            const bookedTickets = tickets.vip.booked + tickets.gold.booked + tickets.normal.booked;
+            const percentage = (bookedTickets / totalTickets) * 100;
+            
+            // تحديث العرض
+            document.getElementById('vip-remaining').textContent = tickets.vip.total - tickets.vip.booked;
+            document.getElementById('gold-remaining').textContent = tickets.gold.total - tickets.gold.booked;
+            document.getElementById('normal-remaining').textContent = tickets.normal.total - tickets.normal.booked;
+            document.getElementById('progress-bar').style.width = percentage + '%';
+            
+            // تحديث الوقت
+            document.getElementById('update-time').textContent = new Date().toLocaleString('ar-SA');
+        }
+        
+        // التحديث التلقائي (يمكن استبداله بطلب AJAX من الخادم)
+        function simulateBooking() {
+            // هذه مجرد محاكاة - في الواقع الفعلي تستقبل البيانات من الخادم
+            tickets.vip.booked = Math.min(tickets.vip.booked + Math.floor(Math.random() * 2), tickets.vip.total);
+            tickets.gold.booked = Math.min(tickets.gold.booked + Math.floor(Math.random() * 3), tickets.gold.total);
+            tickets.normal.booked = Math.min(tickets.normal.booked + Math.floor(Math.random() * 5), tickets.normal.total);
+            
+            updateTickets();
+        }
+        
+        // التهيئة الأولية
+        window.onload = function() {
+            updateCountdown();
+            updateTickets();
+            
+            // تحديث العد التنازلي كل ثانية
+            setInterval(updateCountdown, 1000);
+            
+            // محاكاة تحديث التذاكر كل 10 ثوان (استبدلها باتصال بالخادم في الواقع)
+            setInterval(simulateBooking, 10000);
+        };
+    </script>
+</body>
+</html>
